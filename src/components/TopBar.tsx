@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// ✅ SVG icons
+import { SearchIcon, SunIcon, MoonIcon } from "../icons/PlayerIcons";
 
 export function TopBar() {
     const nav = useNavigation<any>();
@@ -29,12 +32,26 @@ export function TopBar() {
             <View style={styles.left}>
                 <Text style={[styles.logo, { color: c.text }]}>Mume</Text>
             </View>
+
             <View style={styles.right}>
-                <Pressable onPress={() => nav.navigate("Search")} style={styles.iconBtn}>
-                    <Ionicons name="search" size={20} color={c.text} />
+                <Pressable
+                    onPress={() => nav.navigate("Search")}
+                    style={styles.iconBtn}
+                    hitSlop={10}
+                >
+                    <SearchIcon size={20} color={c.text} />
                 </Pressable>
-                <Pressable onPress={toggleTheme} style={styles.iconBtn}>
-                    <Ionicons name={mode === "dark" ? "sunny-outline" : "moon-outline"} size={20} color={c.text} />
+
+                <Pressable
+                    onPress={toggleTheme}
+                    style={styles.iconBtn}
+                    hitSlop={10}
+                >
+                    {mode === "dark" ? (
+                        <SunIcon size={20} color={c.text} />
+                    ) : (
+                        <MoonIcon size={20} color={c.text} />
+                    )}
                 </Pressable>
             </View>
         </View>

@@ -1,12 +1,14 @@
 import React from "react";
 import { View, Text, Pressable, Image, StyleSheet } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
 import { usePlayerStore } from "../store/playerStore";
 import { audioService } from "../services/audioService";
 import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
+
+// ✅ SVG icons (no fonts)
+import { PlayIcon, PauseIcon, NextIcon, PrevIcon } from "../icons/PlayerIcons";
 
 export function MiniPlayer() {
     const nav = useNavigation<any>();
@@ -15,7 +17,6 @@ export function MiniPlayer() {
 
     const activeSong = usePlayerStore((s) => s.activeSong);
     const isPlaying = usePlayerStore((s) => s.isPlaying);
-    const setPlaybackState = usePlayerStore((s) => s.setPlaybackState);
 
     if (!activeSong) return null;
 
@@ -27,28 +28,65 @@ export function MiniPlayer() {
         null;
 
     return (
-        <Pressable style={[styles.container, { borderTopColor: c.border, backgroundColor: c.card }]} onPress={() => nav.navigate("Player")}>
-            {img ? <Image source={{ uri: img }} style={styles.img} /> : <View style={[styles.img, { backgroundColor: c.border }]} />}
+        <Pressable
+            style={[
+                styles.container,
+                { borderTopColor: c.border, backgroundColor: c.card },
+            ]}
+            onPress={() => nav.navigate("Player")}
+        >
+            {img ? (
+                <Image source={{ uri: img }} style={styles.img} />
+            ) : (
+                <View style={[styles.img, { backgroundColor: c.border }]} />
+            )}
+
             <View style={styles.info}>
                 <Text numberOfLines={1} style={[styles.title, { color: c.text }]}>
                     {activeSong.name}
                 </Text>
                 <Text numberOfLines={1} style={[styles.artist, { color: c.sub }]}>
-                    {activeSong.primaryArtists ?? activeSong.artists?.primary?.map((a: any) => a.name).join(", ")}
+                    {activeSong.primaryArtists ??
+                        activeSong.artists?.primary?.map((a: any) => a.name).join(", ")}
                 </Text>
             </View>
 
             <View style={styles.controls}>
-                <Pressable onPress={() => audioService.prev()} style={styles.controlBtn}>
-                    <Ionicons name="play-skip-back" size={20} color={c.text} />
+                <Pressable
+                    onPress={(e) => {
+                        e.stopPropagation();
+                        audioService.prev();
+                    }}
+                    style={styles.controlBtn}
+                    hitSlop={10}
+                >
+                    <PrevIcon size={20} color={c.text} />
                 </Pressable>
 
-                <Pressable onPress={() => audioService.togglePlayPause()} style={[styles.controlBtn, styles.playBtn]}>
-                    <Ionicons name={isPlaying ? "pause" : "play"} size={20} color={c.text} />
+                <Pressable
+                    onPress={(e) => {
+                        e.stopPropagation();
+                        audioService.togglePlayPause();
+                    }}
+                    style={[styles.controlBtn, styles.playBtn]}
+                    hitSlop={10}
+                >
+                    {isPlaying ? (
+                        <PauseIcon size={20} color={c.text} />
+                    ) : (
+                        <PlayIcon size={20} color={c.text} />
+                    )}
                 </Pressable>
 
-                <Pressable onPress={() => audioService.next()} style={styles.controlBtn}>
-                    <Ionicons name="play-skip-forward" size={20} color={c.text} />
+                <Pressable
+                    onPress={(e) => {
+                        e.stopPropagation();
+                        audioService.next();
+                    }}
+                    style={styles.controlBtn}
+                    hitSlop={10}
+                >
+                    <NextIcon size={20} color={c.text} />
                 </Pressable>
             </View>
         </Pressable>
@@ -74,5 +112,12 @@ const styles = StyleSheet.create({
     artist: { fontSize: 12, marginTop: 2 },
     controls: { flexDirection: "row", alignItems: "center" },
     controlBtn: { padding: 8 },
-    playBtn: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", marginHorizontal: 6 },
+    playBtn: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        alignItems: "center",
+        justifyContent: "center",
+        marginHorizontal: 6,
+    },
 });

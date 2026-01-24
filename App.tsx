@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 import { RootNavigator } from "./src/navigation/RootNavigator";
 import { useSettingsStore } from "./src/store/settingsStore";
 import { useTheme } from "./src/theme/useTheme";
@@ -14,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     hydrateStores();
-    audioService.init(); // configure audio mode once
+    audioService.init(); // configure audio once
   }, []);
 
   return (

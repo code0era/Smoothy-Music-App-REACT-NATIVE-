@@ -1,10 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+
 import { usePlayerStore } from "../store/playerStore";
 import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
 import { audioService } from "../services/audioService";
+
+// ✅ SVG icons
+import {
+    ChevronUpIcon,
+    ChevronDownIcon,
+    TrashIcon,
+} from "../icons/PlayerIcons";
 
 export function QueueScreen() {
     const mode = useSettingsStore((s) => s.themeMode);
@@ -24,51 +31,67 @@ export function QueueScreen() {
         reorderQueue(next);
     };
 
+    if (queue.length === 0) {
+        return (
+            <View style={[styles.wrap, { backgroundColor: c.bg }]}>
+                <Text style={{ color: c.sub, padding: 16 }}>Queue is empty.</Text>
+            </View>
+        );
+    }
+
     return (
         <View style={[styles.wrap, { backgroundColor: c.bg }]}>
-            {queue.length === 0 ? (
-                <Text style={{ color: c.sub, padding: 16 }}>Queue is empty.</Text>
-            ) : (
-                <FlatList
-                    data={queue}
-                    keyExtractor={(x) => x.id}
-                    renderItem={({ item, index }) => {
-                        const isNow = item.id === activeId;
-                        return (
-                            <Pressable
-                                onPress={async () => {
-                                    setActiveIndex(index);
-                                    const s = usePlayerStore.getState().activeSong;
-                                    if (s) await audioService.loadAndPlay(s);
-                                }}
-                                style={[styles.row, { borderColor: c.border }]}
-                            >
-                                <View style={{ flex: 1 }}>
-                                    <Text numberOfLines={1} style={{ color: isNow ? c.green : c.text, fontWeight: "800" }}>
-                                        {item.name}
-                                    </Text>
-                                    <Text numberOfLines={1} style={{ color: c.sub, marginTop: 2, fontSize: 12 }}>
-                                        {item.primaryArtists ?? " "}
-                                    </Text>
-                                </View>
+            <FlatList
+                data={queue}
+                keyExtractor={(x) => x.id}
+                contentContainerStyle={{ paddingBottom: 20 }}
+                renderItem={({ item, index }) => {
+                    const isNow = item.id === activeId;
 
-                                <View style={styles.btns}>
-                                    <Pressable onPress={() => move(index, index - 1)} style={styles.iconBtn}>
-                                        <Ionicons name="chevron-up" size={18} color={c.text} />
-                                    </Pressable>
-                                    <Pressable onPress={() => move(index, index + 1)} style={styles.iconBtn}>
-                                        <Ionicons name="chevron-down" size={18} color={c.text} />
-                                    </Pressable>
-                                    <Pressable onPress={() => removeFromQueue(index)} style={styles.iconBtn}>
-                                        <Ionicons name="trash" size={18} color={c.sub} />
-                                    </Pressable>
-                                </View>
-                            </Pressable>
-                        );
-                    }}
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                />
-            )}
+                    return (
+                        <Pressable
+                            onPress={async () => {
+                                setActiveIndex(index);
+                                const s = usePlayerStore.getState().activeSong;
+                                if (s) await audioService.loadAndPlay(s);
+                            }}
+                            style={[styles.row, { borderColor: c.border }]}
+                        >
+                            <View style={{ flex: 1 }}>
+                                <Text
+                                    numberOfLines={1}
+                                    style={{
+                                        color: isNow ? c.green : c.text,
+                                        fontWeight: "800",
+                                    }}
+                                >
+                                    {item.name}
+                                </Text>
+                                <Text
+                                    numberOfLines={1}
+                                    style={{ color: c.sub, marginTop: 2, fontSize: 12 }}
+                                >
+                                    {item.primaryArtists ?? " "}
+                                </Text>
+                            </View>
+
+                            <View style={styles.btns}>
+                                <Pressable onPress={() => move(index, index - 1)} style={styles.iconBtn}>
+                                    <ChevronUpIcon color={c.text} />
+                                </Pressable>
+
+                                <Pressable onPress={() => move(index, index + 1)} style={styles.iconBtn}>
+                                    <ChevronDownIcon color={c.text} />
+                                </Pressable>
+
+                                <Pressable onPress={() => removeFromQueue(index)} style={styles.iconBtn}>
+                                    <TrashIcon color={c.sub} />
+                                </Pressable>
+                            </View>
+                        </Pressable>
+                    );
+                }}
+            />
         </View>
     );
 }

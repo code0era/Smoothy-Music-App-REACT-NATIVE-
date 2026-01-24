@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput, StyleSheet, Text, Pressable, FlatList } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
 import { searchAlbums, searchArtists, searchSongs } from "../api/saavn";
@@ -9,6 +8,9 @@ import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
 import { usePlayerStore } from "../store/playerStore";
 import { audioService } from "../services/audioService";
+
+// ✅ SVG icons
+import { SunIcon, MoonIcon } from "../icons/PlayerIcons";
 
 export function SearchScreen() {
     const nav = useNavigation<any>();
@@ -55,12 +57,13 @@ export function SearchScreen() {
             {/* Header */}
             <View style={styles.header}>
                 <Text style={[styles.logoText, { color: c.text }]}>SMOOTHY</Text>
-                <Pressable onPress={toggleTheme}>
-                    <Ionicons
-                        name={mode === "dark" ? "sunny-outline" : "moon-outline"}
-                        size={22}
-                        color={c.text}
-                    />
+
+                <Pressable onPress={toggleTheme} style={{ padding: 8 }}>
+                    {mode === "dark" ? (
+                        <SunIcon color={c.text} />
+                    ) : (
+                        <MoonIcon color={c.text} />
+                    )}
                 </Pressable>
             </View>
 
@@ -111,11 +114,13 @@ export function SearchScreen() {
                             <Text style={{ color: c.sub }}>
                                 Albums & Artists are fetched (expand UI later if you want).
                             </Text>
+
                             {albums.length > 0 && (
                                 <Text style={{ color: c.text, marginTop: 10, fontWeight: "900" }}>
                                     Albums: {albums.slice(0, 4).map((x: any) => x.name).join(" • ")}
                                 </Text>
                             )}
+
                             {artists.length > 0 && (
                                 <Text style={{ color: c.text, marginTop: 6, fontWeight: "900" }}>
                                     Artists: {artists.slice(0, 4).map((x: any) => x.name).join(" • ")}
@@ -155,7 +160,6 @@ function useDebounce<T>(value: T, delay: number) {
 
 const styles = StyleSheet.create({
     wrap: { flex: 1 },
-
     header: {
         paddingHorizontal: 16,
         paddingTop: 16,
@@ -165,8 +169,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     logoText: { fontSize: 26, fontWeight: "900" },
-
-    input: { margin: 16, borderWidth: 1, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12 },
+    input: {
+        margin: 16,
+        borderWidth: 1,
+        borderRadius: 12,
+        paddingHorizontal: 14,
+        paddingVertical: 12,
+    },
     tabs: { flexDirection: "row", gap: 10, paddingHorizontal: 16, paddingBottom: 10 },
     chip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 999 },
 });

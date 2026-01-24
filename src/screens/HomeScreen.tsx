@@ -9,7 +9,6 @@ import {
     ScrollView,
     Image,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
 import { searchSongs, searchArtists, searchAlbums } from "../api/saavn";
@@ -25,6 +24,11 @@ import { HomeTopTabs, HomeTab } from "../components/HomeTopTabs";
 import { MediaCard } from "../components/MediaCard";
 import { ArtistCircle } from "../components/ArtistCircle";
 
+// ✅ SVG icons
+import { PlayIcon } from "../icons/PlayerIcons";
+import { MusicIcon } from "../icons/PlayerIcons";
+import { SearchIconTab } from "../icons/PlayerIcons";
+
 export function HomeScreen() {
     const nav = useNavigation<any>();
     const mode = useSettingsStore((s) => s.themeMode);
@@ -36,9 +40,7 @@ export function HomeScreen() {
     const [tab, setTab] = useState<HomeTab>("Suggested");
     const [loading, setLoading] = useState(true);
 
-    // Suggested (songs) for cards
     const [suggested, setSuggested] = useState<Song[]>([]);
-    // Artists + Albums lists (for tabs)
     const [artists, setArtists] = useState<any[]>([]);
     const [albums, setAlbums] = useState<any[]>([]);
     const [songsList, setSongsList] = useState<Song[]>([]);
@@ -46,7 +48,6 @@ export function HomeScreen() {
     async function load() {
         setLoading(true);
 
-        // Use real API (no mock)
         const [sug, s1, a1, al1] = await Promise.all([
             searchSongs("trending", 1, 18),
             searchSongs("arijit", 1, 30),
@@ -67,7 +68,6 @@ export function HomeScreen() {
     }, []);
 
     const mostPlayed = useMemo(() => {
-        // Simple “Most Played” = fallback to suggested if not enough recently played
         const rp = recentlyPlayed ?? [];
         if (rp.length >= 6) return rp.slice(0, 12);
         return suggested.slice(0, 12);
@@ -90,25 +90,24 @@ export function HomeScreen() {
 
     return (
         <View style={{ flex: 1, backgroundColor: c.bg }}>
-            {/* Header like screenshot: logo + title + search icon */}
+            {/* Header */}
             <View style={styles.header}>
                 <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                    <Ionicons name="musical-notes" size={22} color={c.green} />
+                    <MusicIcon size={22} color={c.green} />
                     <Text style={[styles.logoText, { color: c.text }]}>Smoothy</Text>
                 </View>
 
-                <Pressable onPress={() => nav.navigate("Search")}>
-                    <Ionicons name="search" size={22} color={c.text} />
+                <Pressable onPress={() => nav.navigate("Search")} hitSlop={10}>
+                    <SearchIconTab size={22} color={c.text} />
                 </Pressable>
             </View>
 
-            {/* Top segmented tabs */}
+            {/* Top tabs */}
             <HomeTopTabs value={tab} onChange={setTab} />
 
             <ScrollView contentContainerStyle={{ paddingBottom: 110 }}>
                 {tab === "Suggested" && (
                     <>
-                        {/* Recently Played */}
                         <SectionTitle title="Recently Played" onSeeAll={() => nav.navigate("Queue")} />
                         <FlatList
                             data={(recentlyPlayed?.length ? recentlyPlayed : suggested).slice(0, 10)}
@@ -117,11 +116,15 @@ export function HomeScreen() {
                             keyExtractor={(x) => x.id}
                             contentContainerStyle={styles.hList}
                             renderItem={({ item, index }) => (
-                                <MediaCard song={item} onPress={() => playFromList((recentlyPlayed?.length ? recentlyPlayed : suggested) as Song[], index)} />
+                                <MediaCard
+                                    song={item}
+                                    onPress={() =>
+                                        playFromList((recentlyPlayed?.length ? recentlyPlayed : suggested) as Song[], index)
+                                    }
+                                />
                             )}
                         />
 
-                        {/* Artists */}
                         <SectionTitle title="Artists" onSeeAll={() => nav.navigate("Search")} />
                         <FlatList
                             data={artists}
@@ -138,6 +141,7 @@ export function HomeScreen() {
                                     item?.image?.[0]?.link ??
                                     item?.image?.[0]?.url ??
                                     null;
+
                                 return (
                                     <ArtistCircle
                                         name={item?.name ?? "Artist"}
@@ -148,7 +152,6 @@ export function HomeScreen() {
                             }}
                         />
 
-                        {/* Most Played */}
                         <SectionTitle title="Most Played" onSeeAll={() => nav.navigate("Search")} />
                         <FlatList
                             data={mostPlayed}
@@ -164,11 +167,7 @@ export function HomeScreen() {
                 )}
 
                 {tab === "Songs" && (
-                    <ListBlock
-                        title="Songs"
-                        data={songsList}
-                        onPress={(list, index) => playFromList(list, index)}
-                    />
+                    <ListBlock title="Songs" data={songsList} onPress={(list, index) => playFromList(list, index)} />
                 )}
 
                 {tab === "Artists" && (
@@ -187,14 +186,14 @@ export function HomeScreen() {
                                     item?.image?.[1]?.link ??
                                     item?.image?.[1]?.url ??
                                     null;
-                                return <ArtistCircle name={item?.name ?? "Artist"} imageUrl={img} />;
-                                    return (
-                                        <ArtistCircle
-                                            name={item?.name ?? "Artist"}
-                                            imageUrl={img}
-                                            onPress={() => nav.navigate("Artist", { artistId: item?.id, name: item?.name })}
-                                        />
-                                    );
+
+                                return (
+                                    <ArtistCircle
+                                        name={item?.name ?? "Artist"}
+                                        imageUrl={img}
+                                        onPress={() => nav.navigate("Artist", { artistId: item?.id, name: item?.name })}
+                                    />
+                                );
                             }}
                         />
                     </View>
@@ -210,7 +209,6 @@ export function HomeScreen() {
                             keyExtractor={(x, i) => String(x?.id ?? i)}
                             contentContainerStyle={styles.hList}
                             renderItem={({ item }) => {
-                                // album card look like media card (reuse structure)
                                 const fakeSong = {
                                     id: String(item?.id ?? Math.random()),
                                     name: item?.name ?? "Album",
@@ -269,9 +267,7 @@ function ListBlock({
         if (!d) return "";
         if (typeof d === "number") {
             const mins = Math.floor(d / 60);
-            const secs = Math.floor(d % 60).
-                toString()
-                .padStart(2, "0");
+            const secs = Math.floor(d % 60).toString().padStart(2, "0");
             return `${mins}:${secs}`;
         }
         if (typeof d === "string") return d;
@@ -305,19 +301,20 @@ function ListBlock({
                             <Text numberOfLines={1} style={[styles.songTitle, { color: c.text }]}>
                                 {s.name}
                             </Text>
-                            <Text numberOfLines={1} style={[styles.songSub, { color: c.sub }]}> 
-                                {s.primaryArtists ?? ""}  |  {formatDuration(s.duration)}
+                            <Text numberOfLines={1} style={[styles.songSub, { color: c.sub }]}>
+                                {s.primaryArtists ?? ""} | {formatDuration(s.duration)}
                             </Text>
                         </View>
 
                         <Pressable
-                            onPress={async (e) => {
+                            onPress={(e) => {
                                 e.stopPropagation();
                                 onPress(data, idx);
                             }}
                             style={[styles.playBtn, { backgroundColor: c.green }]}
+                            hitSlop={10}
                         >
-                            <Ionicons name="play" size={16} color="white" />
+                            <PlayIcon size={16} color="white" />
                         </Pressable>
                     </Pressable>
                 );
@@ -363,5 +360,12 @@ const styles = StyleSheet.create({
     rowImage: { width: 64, height: 64, borderRadius: 12, marginRight: 12 },
     songTitle: { fontSize: 16, fontWeight: "800" },
     songSub: { fontSize: 12, marginTop: 4 },
-    playBtn: { width: 40, height: 40, borderRadius: 20, alignItems: "center", justifyContent: "center", marginLeft: 10 },
+    playBtn: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 10,
+    },
 });

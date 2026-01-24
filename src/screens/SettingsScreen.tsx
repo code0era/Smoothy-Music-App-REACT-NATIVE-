@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
+
+// ✅ SVG icons (NO expo-font, NO vector-icons)
+import { SunIcon, MoonIcon } from "../icons/PlayerIcons";
 
 export function SettingsScreen() {
     const themeMode = useSettingsStore((s) => s.themeMode);
@@ -17,12 +19,13 @@ export function SettingsScreen() {
             {/* Header */}
             <View style={styles.header}>
                 <Text style={[styles.logoText, { color: c.text }]}>SMOOTHY</Text>
-                <Pressable onPress={toggleTheme}>
-                    <Ionicons
-                        name={themeMode === "dark" ? "sunny-outline" : "moon-outline"}
-                        size={22}
-                        color={c.text}
-                    />
+
+                <Pressable onPress={toggleTheme} style={{ padding: 8 }}>
+                    {themeMode === "dark" ? (
+                        <SunIcon color={c.text} />
+                    ) : (
+                        <MoonIcon color={c.text} />
+                    )}
                 </Pressable>
             </View>
 
@@ -30,11 +33,21 @@ export function SettingsScreen() {
 
             <Text style={[styles.label, { color: c.sub }]}>Theme</Text>
             <Row>
-                <Btn active={themeMode === "dark"} label="Dark" onPress={() => useSettingsStore.getState().setThemeMode("dark")} />
-                <Btn active={themeMode === "light"} label="Light" onPress={() => useSettingsStore.getState().setThemeMode("light")} />
+                <Btn
+                    active={themeMode === "dark"}
+                    label="Dark"
+                    onPress={() => useSettingsStore.getState().setThemeMode("dark")}
+                />
+                <Btn
+                    active={themeMode === "light"}
+                    label="Light"
+                    onPress={() => useSettingsStore.getState().setThemeMode("light")}
+                />
             </Row>
 
-            <Text style={[styles.label, { color: c.sub }]}>Audio Quality (bitrate selection)</Text>
+            <Text style={[styles.label, { color: c.sub }]}>
+                Audio Quality (bitrate selection)
+            </Text>
             <Row>
                 <Btn active={quality === "high"} label="High" onPress={() => setQuality("high")} />
                 <Btn active={quality === "medium"} label="Medium" onPress={() => setQuality("medium")} />
@@ -49,7 +62,11 @@ export function SettingsScreen() {
 }
 
 function Row({ children }: { children: React.ReactNode }) {
-    return <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>{children}</View>;
+    return (
+        <View style={{ flexDirection: "row", gap: 10, marginBottom: 20 }}>
+            {children}
+        </View>
+    );
 }
 
 function Btn({ label, active, onPress }: { label: string; active: boolean; onPress: () => void }) {
@@ -63,7 +80,9 @@ function Btn({ label, active, onPress }: { label: string; active: boolean; onPre
                 backgroundColor: active ? "#1DB954" : "#E6E6E6",
             }}
         >
-            <Text style={{ fontWeight: "900", color: active ? "white" : "black" }}>{label}</Text>
+            <Text style={{ fontWeight: "900", color: active ? "white" : "black" }}>
+                {label}
+            </Text>
         </Pressable>
     );
 }

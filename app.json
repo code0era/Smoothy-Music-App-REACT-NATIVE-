@@ -1,22 +1,19 @@
 {
   "expo": {
-    "name": "music-player",
-    "slug": "music-player",
+    "name": "Lokal Music",
+    "slug": "lokal-music",
     "version": "1.0.0",
-
-    "newArchEnabled": true,
-
-    "orientation": "portrait",
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+    "android": {
+      "package": "com.code0era.lokalmusic"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1ead573f-1355-4dc7-bcb0-937d749d8329"
       }
     },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#000000"
-      }
-    }
+    "plugins": [
+      "expo-asset",
+      "expo-font"
+    ]
   }
 }

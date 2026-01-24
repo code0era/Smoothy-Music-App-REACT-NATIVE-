@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import type { RootStackParamList, TabsParamList } from "./types";
 
@@ -16,6 +15,13 @@ import { QueueScreen } from "../screens/QueueScreen";
 import { MiniPlayer } from "../components/MiniPlayer";
 import { useSettingsStore } from "../store/settingsStore";
 import { colors } from "../theme/colors";
+
+// ✅ SVG tab icons (no fonts)
+import {
+    HomeIcon,
+    SearchIconTab,
+    SettingsIcon,
+} from "../icons/PlayerIcons";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabsParamList>();
@@ -39,12 +45,32 @@ function Tabs() {
                         backgroundColor: c.card,
                     },
                     tabBarIcon: ({ color, size, focused }) => {
-                        const map: Record<string, any> = {
-                            Home: focused ? "home" : "home-outline",
-                            Search: focused ? "search" : "search-outline",
-                            Settings: focused ? "settings" : "settings-outline",
-                        };
-                        return <Ionicons name={map[route.name]} size={size} color={color} />;
+                        switch (route.name) {
+                            case "Home":
+                                return (
+                                    <HomeIcon
+                                        size={size}
+                                        color={color}
+                                        filled={focused}
+                                    />
+                                );
+                            case "Search":
+                                return (
+                                    <SearchIconTab
+                                        size={size}
+                                        color={color}
+                                    />
+                                );
+                            case "Settings":
+                                return (
+                                    <SettingsIcon
+                                        size={size}
+                                        color={color}
+                                    />
+                                );
+                            default:
+                                return null;
+                        }
                     },
                 })}
             >
@@ -53,6 +79,7 @@ function Tabs() {
                 <Tab.Screen name="Settings" component={SettingsScreen} />
             </Tab.Navigator>
 
+            {/* Persistent Mini Player */}
             <MiniPlayer />
         </>
     );
@@ -61,18 +88,40 @@ function Tabs() {
 export function RootNavigator() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-            <Stack.Screen name="Album" component={AlbumScreen} options={{ title: "Album" }} />
-            <Stack.Screen name="Artist" component={ArtistScreen} options={{ title: "Artist" }} />
+            <Stack.Screen
+                name="Tabs"
+                component={Tabs}
+                options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+                name="Album"
+                component={AlbumScreen}
+                options={{ title: "Album" }}
+            />
+
+            <Stack.Screen
+                name="Artist"
+                component={ArtistScreen}
+                options={{ title: "Artist" }}
+            />
+
             <Stack.Screen
                 name="Player"
                 component={PlayerScreen}
-                options={{ presentation: "modal", headerShown: false }}
+                options={{
+                    presentation: "modal",
+                    headerShown: false,
+                }}
             />
+
             <Stack.Screen
                 name="Queue"
                 component={QueueScreen}
-                options={{ presentation: "modal", title: "Queue" }}
+                options={{
+                    presentation: "modal",
+                    title: "Queue",
+                }}
             />
         </Stack.Navigator>
     );
