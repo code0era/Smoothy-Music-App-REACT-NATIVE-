@@ -26,6 +26,60 @@
 
 ---
 
+<table>
+  <tr>
+    <td align="center">
+      <b>Home Screen</b><br/>
+      <img src="https://github.com/user-attachments/assets/f92d2447-83d2-421d-8de5-64a8d63f3a3f" width="250"/>
+    </td>
+    <td align="center">
+      <b>Search Screen</b><br/>
+      <img src="https://github.com/user-attachments/assets/bfd65441-5a7a-4116-8db4-731e07f1690a" width="250"/>
+    </td>
+    <td align="center">
+      <b>Player Screen</b><br/>
+      <img src="https://github.com/user-attachments/assets/07cf23e5-4e98-4467-b75c-550c702898ff" width="250"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Mini Player</b><br/>
+      <img src="https://github.com/user-attachments/assets/1acc4869-aa47-4b22-80b5-81c30c27a9cd" width="250"/>
+    </td>
+    <td align="center">
+      <b>Queue Screen</b><br/>
+      <img src="https://github.com/user-attachments/assets/6afd192e-baf8-4add-90b5-d8d521fef9bb" width="250"/>
+    </td>
+    <td align="center">
+      <b>Settings Screen</b><br/>
+      <img src="https://github.com/user-attachments/assets/74676200-40cf-4e5d-bf0f-1270769b70c7" width="250"/>
+    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td align="center">
+      <b>Home – Light Mode</b><br/>
+      <img src="https://github.com/user-attachments/assets/15edbe19-34e2-478d-9507-42498e75ab40" width="250"/>
+    </td>
+    <td align="center">
+      <b>Search – Light Mode</b><br/>
+      <img src="https://github.com/user-attachments/assets/801b796f-46cb-4d89-a9b4-9b15593929ce" width="250"/>
+    </td>
+  
+  </tr>
+</table>
+
+VEDIO::
+
+
+https://drive.google.com/file/d/1X6zR__ZOAi5wB9sVQzvLR6bNlf_HAWDK/view?usp=sharing
+
+---
+
+
+
+
 ## 🧱 Architecture (High Level)
 
 ```
@@ -132,73 +186,7 @@ npx expo start
 npx expo start -c
 ```
 
----
 
-## 📸 Screenshots
-
-> Add your screenshots below (replace the image paths once you capture).
-
-### ✅ Home Screen
-
-**(Paste screenshot here)**
-`/screenshots/home.png`
-
-![Home](./screenshots/home.png)
-
----
-
-### ✅ Search Screen
-
-**(Paste screenshot here)**
-`/screenshots/search.png`
-
-![Search](./screenshots/search.png)
-
----
-
-### ✅ Player Screen (Full Player)
-
-**(Paste screenshot here)**
-`/screenshots/player.png`
-
-![Player](./screenshots/player.png)
-
----
-
-### ✅ Mini Player (Persistent)
-
-**(Paste screenshot here)**
-`/screenshots/mini-player.png`
-
-![Mini Player](./screenshots/mini-player.png)
-
----
-
-### ✅ Queue Screen
-
-**(Paste screenshot here)**
-`/screenshots/queue.png`
-
-![Queue](./screenshots/queue.png)
-
----
-
-### ✅ Settings Screen (Dark/Light Mode)
-
-**(Paste screenshot here)**
-`/screenshots/settings.png`
-
-![Settings](./screenshots/settings.png)
-
----
-
-## 🎥 Demo Video
-
-Add link here:
-
-* `./demo/demo.mp4` OR YouTube/Drive link
-
----
 
 ## 🧪 What was tested
 
