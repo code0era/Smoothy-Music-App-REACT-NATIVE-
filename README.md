@@ -25,6 +25,8 @@
 - State persistence ready (Recently played / Settings)
 
 ---
+APP link :https://expo.dev/accounts/codeera/projects/lokal-music/builds/745368bb-e838-45f4-944e-26806d945682
+
 
 <table>
   <tr>
