@@ -248,11 +248,3 @@ If needed, next step is a **custom dev build** using EAS.
 **SMOOTHY Music Player**
 Built with ❤️ using React Native + Expo SDK 52.
 
-```
-
-If you want, I can also generate:
-- `screenshots/` folder creation commands
-- a ready **README with badges + feature table**
-- a **2–3 min demo video script** (what to show + what to say)
-::contentReference[oaicite:0]{index=0}
-```
