@@ -74,8 +74,7 @@ APP link :https://expo.dev/accounts/codeera/projects/lokal-music/builds/745368bb
 
 VEDIO:
 
-
-https://drive.google.com/file/d/1X6zR__ZOAi5wB9sVQzvLR6bNlf_HAWDK/view?usp=sharing
+https://drive.google.com/file/d/1Ts0jQxP15aqI_Gcp0qda-LViASIbONMn/view
 
 ---
 
