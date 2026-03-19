@@ -126,3 +126,4 @@ export function RootNavigator() {
         </Stack.Navigator>
     );
 }
+

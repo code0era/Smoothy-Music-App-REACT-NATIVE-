@@ -2,6 +2,7 @@
   "expo": {
     "name": "Lokal Music",
     "slug": "lokal-music",
+    
     "version": "1.0.0",
     "android": {
       "package": "com.code0era.lokalmusic"
