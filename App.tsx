@@ -15,9 +15,8 @@ export default function App() {
 
   useEffect(() => {
     hydrateStores();
-    audioService.init(); // configure audio once
+    audioService.init(); 
   }, []);
-
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={navTheme}>

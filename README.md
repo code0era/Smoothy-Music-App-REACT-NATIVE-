@@ -72,15 +72,12 @@ APP link :https://expo.dev/accounts/codeera/projects/lokal-music/builds/745368bb
   </tr>
 </table>
 
-VEDIO::
+VEDIO:
 
 
 https://drive.google.com/file/d/1X6zR__ZOAi5wB9sVQzvLR6bNlf_HAWDK/view?usp=sharing
 
 ---
-
-
-
 
 ## 🧱 Architecture (High Level)
 
